@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Replace with your login logic/API call
-    console.log('Logging in with:', email, password);
+    // Temporary routing: Navigate immediately to the Navbar page.
+    console.log('Temporary routing: Navigating to Navbar (backend not yet implemented)');
+    navigate('/navbar');
   };
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          alt="Your Company"
+          src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+          className="mx-auto h-10 w-auto"
+        />
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>
