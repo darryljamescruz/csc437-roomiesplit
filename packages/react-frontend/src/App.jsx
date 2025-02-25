@@ -2,25 +2,22 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import MainLayout from './pages/MainLayout';
-import MainPage from './pages/MainPage';
-
+import MainPage from './pages/Mainpage';
+import './index.css';
 
 function App() {
-    return (
-      <Router>
-        <Routes>
-          {/* Public Route: Login */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Protected Layout: Navbar and Main Page */}
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<MainPage />} />
-            {/* Future pages can be nested here */}
-          </Route>
-        </Routes>
-      </Router>
-    );
-  }
-  
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<MainLayout />}>
+          <Route path="/main" element={<MainPage />} />
+          {/* Additional protected routes can go here */}
+        </Route>
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </Router>
+  );
+}
 
 export default App;

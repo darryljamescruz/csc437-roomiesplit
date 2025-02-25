@@ -9,8 +9,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Temporary routing: Navigate immediately to the Navbar page.
-    console.log('Temporary routing: Navigating to Navbar (backend not yet implemented)');
-    navigate('/navbar');
+    navigate('/Main');
   };
 
   return (
