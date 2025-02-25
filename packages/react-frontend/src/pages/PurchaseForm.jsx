@@ -33,7 +33,7 @@ export default function PurchaseForm({ onClose, onAddPurchase }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 dark:text-white">
             <input
                 type="date"
                 name="date"

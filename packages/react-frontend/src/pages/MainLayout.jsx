@@ -6,11 +6,12 @@ import Navbar from './Navbar';
 
 export default function MainLayout() {
     return (
-        <>
-          <Navbar />
-          <div className="p-4 bg-white dark:bg-gray-800" >
-            <Outlet />
-          </div>
-        </>
-      );
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-grow p-4 bg-white text-black dark:bg-gray-800 dark:text-white">
+          <Outlet />
+        </div>
+      </div>
+    );
+  
 }

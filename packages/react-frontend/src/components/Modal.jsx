@@ -19,7 +19,7 @@ function Modal({ isOpen, onCloseRequested, headerLabel, children }) {
       <div
         ref={modalRef}
         className="p-6 rounded-lg shadow-lg w-[90%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-lg 
-                   bg-white bg-opacity-50 backdrop-blur-lg border border-gray-300"
+                   bg-white dark:bg-gray-900 dark:text-white bg-opacity-50 backdrop-blur-lg border border-gray-300"
       >
         {/* Modal Header */}
         <div className="flex justify-between items-center border-b pb-2">
