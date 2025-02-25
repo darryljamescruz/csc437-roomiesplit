@@ -13,7 +13,6 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Left side: Company logo and navigation links */}
         <div className="flex items-center">
           <img
             alt="Your Company"

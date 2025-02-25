@@ -33,7 +33,7 @@ export default function MainPage() {
             id: Date.now(),
             date: newPurchase.date,
             name: newPurchase.name,
-            cost: costNumber,
+            cost: cost,
             category: newPurchase.category,
             person: newPurchase.person,
             assignees: assignee_array,
@@ -145,7 +145,7 @@ export default function MainPage() {
                   <td className="border p-2">{purchase.category}</td>
                   <td className="border p-2">{purchase.person}</td>
                   <td className="border p-2">{purchase.assignees.join(', ')}</td>
-                  <td className="border p-2">${calculateSplit(purchase)}</td>
+                  <td className="border p-2">${calculate_split(purchase)}</td>
                 </tr>
               ))}
             </tbody>
