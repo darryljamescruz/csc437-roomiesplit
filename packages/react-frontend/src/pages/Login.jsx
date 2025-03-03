@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import moneyIcon from '../assets/money.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -78,9 +78,9 @@ export default function Login() {
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account?{' '}
-          <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+          <Link to="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500">
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>
