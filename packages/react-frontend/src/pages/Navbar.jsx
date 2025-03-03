@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
-  { name: 'FUTURE PAGES', href: '#', current: false },
+  { name: 'Household', href: '#', current: false },
 ];
 
 function classNames(...classes) {
