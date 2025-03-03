@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moneyIcon from '../assets/money.svg';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -8,16 +9,19 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Temporary routing: Navigate immediately to the Navbar page.
+    // Temporary routing: Navigate immediately to the Main page.
     navigate('/Main');
   };
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h1 className="text-center text-3xl font-bold text-gray-900 mb-4">
+          Welcome to RoomieSplit
+        </h1>
         <img
-          alt="Your Company"
-          src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+          alt="Money Icon"
+          src={moneyIcon}
           className="mx-auto h-10 w-auto"
         />
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">

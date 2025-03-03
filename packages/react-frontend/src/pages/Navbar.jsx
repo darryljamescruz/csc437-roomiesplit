@@ -1,6 +1,7 @@
 import { UserCircleIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { Menu } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
+import moneyIcon from '../assets/money.svg';
 import React, { useState, useEffect } from 'react';
 
 const navigation = [
@@ -39,7 +40,7 @@ export default function Navbar() {
         <div className="flex items-center">
           <img
             alt="Your Company"
-            src="https://place-hold.it/300"
+            src={moneyIcon}
             className="h-8 w-auto"
           />
           <div className="ml-10 flex space-x-4">
