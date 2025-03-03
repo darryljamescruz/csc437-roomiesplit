@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '../components/Modal';
-import PurchaseForm from './PurchaseForm';
+import PurchaseForm from '../components/PurchaseForm';
 import EditableTable from './EditableTable';
 
 export default function MainPage() {

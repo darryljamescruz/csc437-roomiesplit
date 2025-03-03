@@ -4,6 +4,8 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import MainLayout from './pages/MainLayout';
 import MainPage from './pages/Dashboard';
+import HouseholdPage from './pages/HouseholdPage';
+
 import './index.css';
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route element={<MainLayout />}>
           <Route path="/main" element={<MainPage />} />
+          <Route path="/household" element={<HouseholdPage />} />
           {/* Additional protected routes can go here */}
         </Route>
         <Route path="/" element={<Login />} />
