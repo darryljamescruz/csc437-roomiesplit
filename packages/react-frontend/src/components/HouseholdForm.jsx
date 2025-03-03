@@ -111,19 +111,19 @@ export default function HouseholdForm({ onSubmit }) {
       {roommates.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-200 mb-2">Roommates</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600">
-              <thead className="bg-gray-50 dark:bg-gray-800">
+          <div className="overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
                 <tr>
-                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Name</th>
-                  <th className="px-4 py-2 border border-gray-300 dark:border-gray-600">Email</th>
+                  <th className="px-4 py-3 border border-gray-300 dark:border-gray-600">Name</th>
+                  <th className="px-4 py-3 border border-gray-300 dark:border-gray-600">Email</th>
                 </tr>
               </thead>
               <tbody>
                 {roommates.map((rm, idx) => (
-                  <tr key={idx} className="bg-white dark:bg-gray-700">
-                    <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">{rm.name}</td>
-                    <td className="px-4 py-2 border border-gray-300 dark:border-gray-600">{rm.email}</td>
+                  <tr key={idx} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td className="px-4 py-3 border border-gray-300 dark:border-gray-600">{rm.name}</td>
+                    <td className="px-4 py-3 border border-gray-300 dark:border-gray-600">{rm.email}</td>
                   </tr>
                 ))}
               </tbody>
