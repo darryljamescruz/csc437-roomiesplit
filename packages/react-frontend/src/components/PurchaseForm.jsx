@@ -50,7 +50,7 @@ export default function PurchaseForm({ onClose, onAddPurchase }) {
         </div>
         <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
-                ame of Purchase
+                Name of Purchase
             </label>
             <input
                 type="text"

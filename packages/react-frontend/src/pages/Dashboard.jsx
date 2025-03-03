@@ -14,13 +14,15 @@ export default function MainPage() {
 
     return (
         <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Roommate Cost Splitter</h1>
-        <button
-            onClick={() => setIsModalOpen(true)}
-            className="mb-4 bg-indigo-600 text-white p-2 rounded"
-        >
+        <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">Roommate Cost Splitter</h1>
+            <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
             Add Purchase
-        </button>
+            </button>
+        </div>
 
         <EditableTable purchases={purchases} />
 
