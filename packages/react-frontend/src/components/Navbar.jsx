@@ -1,12 +1,12 @@
 import { UserCircleIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { Menu } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from "react-router-dom";
 import moneyIcon from '../assets/money.svg';
 import React, { useState, useEffect } from 'react';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Household', href: '#', current: false },
+  { name: "Dashboard", href: "/main" },
+  { name: "Household", href: "/household" },
 ];
 
 function classNames(...classes) {
@@ -38,26 +38,23 @@ export default function Navbar() {
     <nav className="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div className="flex items-center">
-          <img
-            alt="Your Company"
-            src={moneyIcon}
-            className="h-8 w-auto"
-          />
+          <img alt="Money Icon" src={moneyIcon} className="h-8 w-auto" />
           <div className="ml-10 flex space-x-4">
             {navigation.map((item) => (
-              <a
+              <NavLink
                 key={item.name}
-                href={item.href}
-                aria-current={item.current ? 'page' : undefined}
-                className={classNames(
-                  item.current
-                    ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white',
-                  'rounded-md px-3 py-2 text-sm font-medium'
-                )}
+                to={item.href}
+                className={({ isActive }) =>
+                  classNames(
+                    isActive
+                      ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white",
+                    "rounded-md px-3 py-2 text-sm font-medium"
+                  )
+                }
               >
                 {item.name}
-              </a>
+              </NavLink>
             ))}
           </div>
         </div>
@@ -65,7 +62,6 @@ export default function Navbar() {
           {/* Dark Mode Toggle Button */}
           <button
             onClick={() => {
-              console.log("Before toggle:", darkMode);
               setDarkMode(!darkMode);
             }}
             aria-label="Toggle dark mode"
