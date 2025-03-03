@@ -1,5 +1,6 @@
 import { UserCircleIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { Menu } from '@headlessui/react';
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 const navigation = [
@@ -14,6 +15,7 @@ function classNames(...classes) {
 export default function Navbar() {
   // Dark mode state
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   // toggle dark mode on root element
   useEffect(() => {
@@ -26,8 +28,9 @@ export default function Navbar() {
   }, [darkMode]);
 
   const handleSignOut = () => {
-    // Temporary sign out action; replace with your sign-out logic
-    console.log("Signing out...");
+    // Temporary sign out action with no backend action
+    console.log("Signing out...");    
+    navigate('/login');
   };
 
   return (
