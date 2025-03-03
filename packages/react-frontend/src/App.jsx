@@ -15,8 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route element={<MainLayout />}>
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/household" element={<HouseholdPage />} />
+          <Route path="main" element={<MainPage />} />
+          <Route path="household" element={<HouseholdPage />} />
           {/* Additional protected routes can go here */}
         </Route>
         <Route path="/" element={<Login />} />
