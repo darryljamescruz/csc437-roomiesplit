@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import Modal from '../components/Modal';
 import PurchaseForm from '../components/PurchaseForm';
 import EditableTable from './EditableTable';
+import { Purchase } from '../types';
+
 
 export default function MainPage() {
-    const [purchases, setPurchases] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [purchases, setPurchases] = useState<Purchase[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     // Add a new purchase to the list of purchases
-    const addPurchase = (purchase) => {
+    const addPurchase = (purchase: Purchase) => {
         setPurchases([...purchases, purchase]);
     };
 

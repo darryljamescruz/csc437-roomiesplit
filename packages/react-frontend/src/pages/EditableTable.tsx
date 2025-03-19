@@ -1,9 +1,11 @@
 // src/pages/EditableTable.jsx
 // **Component to display a table of purchases that can be edited.**
 import React from 'react';
-export default function EditableTable({ purchases }) {
+import { Purchase } from '../types';
+
+export default function EditableTable({ purchases }: { purchases: Purchase[] }) {
   // Calculate split amount: cost divided by number of assignees
-  const calculateSplit = (purchase) => {
+  const calculateSplit = (purchase: Purchase) => {
     if (purchase.assignees.length === 0) return '-';
     return (purchase.cost / purchase.assignees.length).toFixed(2);
   };

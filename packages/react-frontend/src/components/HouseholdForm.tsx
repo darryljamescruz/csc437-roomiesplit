@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { Roommate, HouseholdFormData } from '../types';
+
+// Define props for the HouseholdForm component
+interface HouseholdFormProps {
+  onSubmit: (data: HouseholdFormData) => void;
+}
 
 /**
  * HouseholdForm Component
@@ -7,15 +13,15 @@ import React, { useState } from 'react';
  * Props:
  * - onSubmit: function called with household data when the form is submitted.
  */
-export default function HouseholdForm({ onSubmit }) {
+export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
   // State for household name and roommate inputs.
-  const [householdName, setHouseholdName] = useState('');
-  const [roommateName, setRoommateName] = useState('');
-  const [roommateEmail, setRoommateEmail] = useState('');
-  const [roommates, setRoommates] = useState([]);
+  const [householdName, setHouseholdName] = useState<string>('');
+  const [roommateName, setRoommateName] = useState<string>('');
+  const [roommateEmail, setRoommateEmail] = useState<string>('');
+  const [roommates, setRoommates] = useState<Roommate[]>([]);
 
   // Function to add a roommate to the roommates array.
-  const addRoommate = () => {
+  const addRoommate = (): void  => {
     if (roommateName.trim() && roommateEmail.trim()) {
       setRoommates([...roommates, { name: roommateName.trim(), email: roommateEmail.trim() }]);
       setRoommateName('');
@@ -24,12 +30,12 @@ export default function HouseholdForm({ onSubmit }) {
   };
 
   // Handle form submission.
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Create a household object with the household name and the list of roommates.
-    const householdData = {
-      householdName,
-      roommates,
+    const householdData: HouseholdFormData = {
+      name: householdName,
+      email: '', 
     };
     // Call the parent-provided onSubmit function with the data.
     onSubmit(householdData);
