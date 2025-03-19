@@ -4,18 +4,26 @@ import { NavLink, useNavigate } from "react-router-dom";
 import moneyIcon from '../assets/money.svg';
 import React, { useState, useEffect } from 'react';
 
-const navigation = [
+// Define an interface for navigation items.
+interface NavigationItem {
+  name: string;
+  href: string;
+}
+
+// Define your navigation array with type annotations.
+const navigation: NavigationItem[] = [
   { name: "Dashboard", href: "/main" },
   { name: "Household", href: "/household" },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+// Helper function to join CSS classes.
+function classNames(...classes: string[]): string {
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
   // Dark mode state
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // toggle dark mode on root element

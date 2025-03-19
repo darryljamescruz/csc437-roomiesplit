@@ -1,12 +1,22 @@
-import { useRef } from "react";
+import React, { useRef, ReactNode, MouseEvent, JSX } from "react";
 
-function Modal({ isOpen, onCloseRequested, headerLabel, children }) {
-  const modalRef = useRef(null); // Reference to detect clicks inside modal
+// Define the props for Modal
+interface ModalProps {
+  isOpen: boolean;
+  onCloseRequested: () => void;
+  headerLabel: string;
+  children: ReactNode;
+}
+
+function Modal({ isOpen, onCloseRequested, headerLabel, children }: ModalProps): JSX.Element | null {
+  // Reference for the modal container; using HTMLDivElement
+  const modalRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null; // Don't render if modal is closed
 
-  const handleOverlayClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
+  // Handle clicks on the overlay. If the click target is not inside the modal, close the modal.
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>): void => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       onCloseRequested(); // Close modal if clicked outside
     }
   };
