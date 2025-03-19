@@ -6,7 +6,6 @@ import MainLayout from './pages/MainLayout';
 import MainPage from './pages/Dashboard';
 import HouseholdPage from './pages/HouseholdPage';
 
-import './index.css';
 
 function App() {
   return (

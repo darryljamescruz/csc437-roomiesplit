@@ -8,7 +8,8 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // TODO: Add sign-up logic (validation, API call, etc.)
     // For now, we'll simply navigate to the login page after "sign-up"

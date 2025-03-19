@@ -9,7 +9,8 @@ import HouseholdForm from '../components/HouseholdForm'; // Adjust the path as n
  */
 export default function HouseholdPage() {
   // This function would be replaced with your backend call later.
-  const handleHouseholdSubmit = (householdData) => {
+  //TODO: FIX
+  const handleHouseholdSubmit = (householdData: { name: string; email: string }) => {
     console.log("Household Created:", householdData);
     // For now, simply log the household info.
     // Later, you can send this data to your backend and navigate accordingly.
