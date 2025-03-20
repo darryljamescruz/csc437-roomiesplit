@@ -1,4 +1,3 @@
-// EditableTable.tsx
 import React, { JSX } from 'react';
 import { Purchase } from '../types.js';
 
@@ -6,10 +5,17 @@ interface EditableTableProps {
   purchases: Purchase[];
   selectedIds: number[];
   onToggleSelect: (id: number) => void;
-  onEditPurchase: (purchase: Purchase) => void; // new callback
+  onEditPurchase: (purchase: Purchase) => void;
+  onDeletePurchase: (id: number) => void;
 }
 
-export default function EditableTable({ purchases, selectedIds, onToggleSelect, onEditPurchase }: EditableTableProps): JSX.Element {
+export default function EditableTable({
+  purchases,
+  selectedIds,
+  onToggleSelect,
+  onEditPurchase,
+  onDeletePurchase,
+}: EditableTableProps): JSX.Element {
   const calculateSplit = (purchase: Purchase): string => {
     if (purchase.assignees.length === 0) return '-';
     return (purchase.cost / purchase.assignees.length).toFixed(2);
@@ -37,7 +43,7 @@ export default function EditableTable({ purchases, selectedIds, onToggleSelect, 
             return (
               <tr
                 key={purchase.id}
-                className={`cursor-pointer ${isSelected ? 'bg-blue-100 dark:bg-blue-900' : 'bg-white dark:bg-gray-800'} border-b dark:border-gray-700`}
+                className={`${isSelected ? 'bg-blue-100 dark:bg-blue-900' : 'bg-white dark:bg-gray-800'} border-b dark:border-gray-700`}
               >
                 <td className="px-4 py-3 border-r">
                   <input
@@ -54,12 +60,18 @@ export default function EditableTable({ purchases, selectedIds, onToggleSelect, 
                 <td className="px-4 py-3 border-r">{purchase.person}</td>
                 <td className="px-4 py-3 border-r">{purchase.assignees.join(', ')}</td>
                 <td className="px-4 py-3 border-r">${calculateSplit(purchase)}</td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 space-x-1">
                   <button
                     onClick={() => onEditPurchase(purchase)}
                     className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     Edit
+                  </button>
+                  <button
+                    onClick={() => onDeletePurchase(purchase.id)}
+                    className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>

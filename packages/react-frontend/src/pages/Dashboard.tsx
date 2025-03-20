@@ -88,7 +88,8 @@ export default function MainPage(): JSX.Element {
         purchases={purchases} 
         selectedIds={selectedIds} 
         onToggleSelect={toggleSelect} 
-        onEditPurchase={handleEditPurchase} // Pass edit callback to table
+        onEditPurchase={handleEditPurchase}
+        onDeletePurchase={(id: number) => deletePurchase([id])}
       />
 
       <Modal
