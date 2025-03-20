@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, JSX, useEffect } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, JSX } from 'react';
 import { PurchaseFormData, Purchase } from '../types.js';
 
 interface PurchaseFormProps {
@@ -48,17 +48,15 @@ export default function PurchaseForm({ onClose, onAddPurchase, householdId, init
     const assigneesArray = assigneesInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
     
     const purchase: Purchase = {
-      id: initialPurchase ? initialPurchase.id : Date.now(), // Keep existing id if editing
+      id: initialPurchase ? initialPurchase.id : Date.now() + Math.floor(Math.random() * 10000), // Unique id for new purchase
       date: formData.date,
       name: formData.name,
       cost: parseFloat(formData.cost),
       category: formData.category,
       person: formData.person,
       assignees: assigneesArray,
-      //ousehold: householdId || ''
     };
 
-    // For now, we simply call onAddPurchase. In a real app, you might call PATCH for edits.
     try {
       const token = localStorage.getItem('token');
       const url = initialPurchase 

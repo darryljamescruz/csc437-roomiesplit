@@ -67,4 +67,35 @@ router.delete('/:id', verifyAuthToken, async (req: Request, res: Response): Prom
   }
 });
 
+/**
+ * PATCH /api/purchases/:id
+ * Updates an existing purchase. Expects updated purchase data in the request body.
+ */
+router.patch('/:id', verifyAuthToken, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    // Retrieve updated data from the request body.
+    // It's assumed that the client sends only the fields that need updating.
+    const updatedData = req.body;
+
+    // Find the purchase by id and update it.
+    // { new: true } returns the updated document.
+    const updatedPurchase = await Purchase.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!updatedPurchase) {
+      res.status(404).json({ message: 'Purchase not found.' });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Purchase updated successfully.',
+      purchase: updatedPurchase,
+    });
+  } catch (error) {
+    console.error('Error updating purchase:', error);
+    res.status(500).json({ message: 'Server error updating purchase.' });
+  }
+});
+
+
 export default router;
