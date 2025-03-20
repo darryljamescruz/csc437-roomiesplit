@@ -7,12 +7,16 @@ export interface IUser extends Document {
     fullName: string;
     email: string;
     password:string;
-
+    darkModeEnabled: boolean;
     comparePassword(candidatePassword: string): Promise<Boolean>;
 }
 
 // user schema defintion
 const userSchema: Schema<IUser> = new Schema({
+    fullName: { 
+        type: String, 
+        required: true 
+    },
     email: {
         type:String,
         required:true,
@@ -22,7 +26,11 @@ const userSchema: Schema<IUser> = new Schema({
     password: {
         type:String,
         required: true,
-    }
+    },
+    darkModeEnabled: { 
+        type: Boolean, 
+        default: false 
+    },
 })
 
 // presave hook to has password before saviing

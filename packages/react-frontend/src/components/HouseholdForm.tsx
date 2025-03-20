@@ -1,27 +1,25 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Roommate, HouseholdFormData } from '../types.js';
+import React, { useState, ChangeEvent, FormEvent, JSX } from 'react';
+import { HouseholdFormData, Roommate } from '../types.js';
 
-// Define props for the HouseholdForm component
-interface HouseholdFormProps {
-  onSubmit: (data: HouseholdFormData) => void;
-}
 
 /**
- * HouseholdForm Component
- * Renders a form to create a household by naming it and adding roommates.
- *
- * Props:
- * - onSubmit: function called with household data when the form is submitted.
+ * Props for HouseholdForm Component
+ * - onSubmit: Callback invoked with household data when the form is submitted.
+ * - isLoading: (Optional) Boolean indicating if a submission is in progress.
  */
-export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
-  // State for household name and roommate inputs.
+interface HouseholdFormProps {
+  onSubmit: (data: HouseholdFormData) => void;
+  isLoading?: boolean;
+}
+
+export default function HouseholdForm({ onSubmit, isLoading = false }: HouseholdFormProps): JSX.Element {
   const [householdName, setHouseholdName] = useState<string>('');
   const [roommateName, setRoommateName] = useState<string>('');
   const [roommateEmail, setRoommateEmail] = useState<string>('');
   const [roommates, setRoommates] = useState<Roommate[]>([]);
 
-  // Function to add a roommate to the roommates array.
-  const addRoommate = (): void  => {
+  // Function to add a roommate if both name and email are provided.
+  const addRoommate = (): void => {
     if (roommateName.trim() && roommateEmail.trim()) {
       setRoommates([...roommates, { name: roommateName.trim(), email: roommateEmail.trim() }]);
       setRoommateName('');
@@ -30,16 +28,14 @@ export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
   };
 
   // Handle form submission.
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    // Create a household object with the household name and the list of roommates.
     const householdData: HouseholdFormData = {
-      name: householdName,
-      email: '', 
+      householdName,
+      roommates,
     };
-    // Call the parent-provided onSubmit function with the data.
     onSubmit(householdData);
-    // Optionally reset form state after submission.
+    // Optionally reset the form state after submission.
     setHouseholdName('');
     setRoommates([]);
   };
@@ -48,10 +44,7 @@ export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Household Name Input */}
       <div>
-        <label
-          htmlFor="householdName"
-          className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-        >
+        <label htmlFor="householdName" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
           Household Name
         </label>
         <input
@@ -59,8 +52,8 @@ export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
           id="householdName"
           required
           value={householdName}
-          onChange={(e) => setHouseholdName(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setHouseholdName(e.target.value)}
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -71,35 +64,29 @@ export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Roommate Name */}
           <div>
-            <label
-              htmlFor="roommateName"
-              className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-            >
+            <label htmlFor="roommateName" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
               Name
             </label>
             <input
               type="text"
               id="roommateName"
               value={roommateName}
-              onChange={(e) => setRoommateName(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setRoommateName(e.target.value)}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
                          focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
             />
           </div>
           {/* Roommate Email */}
           <div>
-            <label
-              htmlFor="roommateEmail"
-              className="block text-sm font-medium text-gray-900 dark:text-gray-200"
-            >
+            <label htmlFor="roommateEmail" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
               Email
             </label>
             <input
               type="email"
               id="roommateEmail"
               value={roommateEmail}
-              onChange={(e) => setRoommateEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setRoommateEmail(e.target.value)}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
                          focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
             />
           </div>
@@ -141,9 +128,10 @@ export default function HouseholdForm({ onSubmit }: HouseholdFormProps) {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        disabled={isLoading}
+        className="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
       >
-        Save Household
+        {isLoading ? 'Saving...' : 'Save Household'}
       </button>
     </form>
   );

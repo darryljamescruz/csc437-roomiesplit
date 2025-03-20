@@ -8,12 +8,13 @@ export interface Purchase {
     assignees: string[];
   }
 
-export interface Roommate {
-    name: string;
-    email: string;
-}
 
-export interface HouseholdFormData {
+  export interface Roommate {
     name: string;
     email: string;
+  }
+  
+  export interface HouseholdFormData {
+    householdName: string;
+    roommates: Roommate[];
   }

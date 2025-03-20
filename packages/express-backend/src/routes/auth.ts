@@ -78,6 +78,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
     // Create new user (password is hashed in the pre-save hook)
     const newUser = new User({ fullName, email, password });
     await newUser.save();
+    console.log(newUser);
     res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
     console.error('Registration Error:', error);

@@ -41,6 +41,10 @@ const mongoose_1 = __importStar(require("mongoose"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 // user schema defintion
 const userSchema = new mongoose_1.Schema({
+    fullName: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -50,7 +54,11 @@ const userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    darkModeEnabled: {
+        type: Boolean,
+        default: false
+    },
 });
 // presave hook to has password before saviing
 userSchema.pre('save', async function (next) {
