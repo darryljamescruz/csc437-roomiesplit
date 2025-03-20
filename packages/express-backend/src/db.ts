@@ -11,13 +11,15 @@ const connectDB = async () => {
     if (!mongoURI) throw new Error("MONGO_URI is missing in .env file");
 
     await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     });
 
     console.log("✅ MongoDB Atlas Connected Successfully!");
   } catch (error) {
-    console.error("❌ MongoDB Connection Error:", error.message);
+    if (error instanceof Error) {
+      console.error("❌ MongoDB Connection Error:", error.message);
+    } else {
+      console.error("❌ MongoDB Connection Error:", error);
+    }
     process.exit(1); // Exit process on failure
   }
 };

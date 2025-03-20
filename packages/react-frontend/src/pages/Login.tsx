@@ -3,21 +3,37 @@ import moneyIcon from '../assets/money.svg';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // Set loading indicator
       setIsLoading(true);
-      // Simulate a network request with a 2-second delay
-      setTimeout(() => {
+      setError(null);
+      try {
+        const response = await fetch('http://localhost:8000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          // If login fails, display the error message returned by the server.
+          setError(data.message || 'Login failed.');
+        } else {
+          // Optionally store the authentication token if returned:
+          // localStorage.setItem('token', data.token);
+          navigate('/main'); // Navigate to your protected route
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        setError('Network error.');
+      } finally {
         setIsLoading(false);
-        // After "network request", navigate to the main page
-        navigate('/main');
-      }, 2000);
+      }
     };
 
 
@@ -36,7 +52,7 @@ export default function Login() {
             Sign in to your account
           </h2>
         </div>
-
+  
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -56,7 +72,7 @@ export default function Login() {
                 />
               </div>
             </div>
-
+  
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-900">
                 Password
@@ -74,13 +90,15 @@ export default function Login() {
                 />
               </div>
             </div>
-
+  
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+  
             <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                Sign in
+                {isLoading ? 'Loading...' : 'Sign in'}
               </button>
             </div>
           </form>

@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Roommate, HouseholdFormData } from '../types';
+import { Roommate, HouseholdFormData } from '../types.js';
 
 // Define props for the HouseholdForm component
 interface HouseholdFormProps {
