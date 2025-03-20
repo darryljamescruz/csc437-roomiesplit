@@ -30,6 +30,7 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'Server error during registration.' });
     }
 });
+
 // Login endpoint
 router.post('/login', async (req, res) => {
     try {

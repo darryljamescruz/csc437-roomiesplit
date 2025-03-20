@@ -3,21 +3,37 @@ import moneyIcon from '../assets/money.svg';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // Set loading indicator
       setIsLoading(true);
-      // Simulate a network request with a 2-second delay
-      setTimeout(() => {
+      setError(null);
+      try {
+        const response = await fetch('http://localhost:8000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          // If login fails, display the error message returned by the server.
+          setError(data.message || 'Login failed.');
+        } else {
+          // Optionally store the authentication token if returned:
+          // localStorage.setItem('token', data.token);
+          navigate('/main'); // Navigate to your protected route
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        setError('Network error.');
+      } finally {
         setIsLoading(false);
-        // After "network request", navigate to the main page
-        navigate('/main');
-      }, 2000);
+      }
     };
 
 
