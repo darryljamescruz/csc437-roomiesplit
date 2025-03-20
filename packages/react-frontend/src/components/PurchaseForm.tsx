@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent, JSX } from 'react';
-import Modal from './Modal.js'; // Assumes you have a Modal component
+import Modal from './Modal.js';
 import { PurchaseFormData, Purchase, Roommate } from '../types.js';
 
 interface PurchaseFormProps {
@@ -10,48 +10,38 @@ interface PurchaseFormProps {
 
 /**
  * PurchaseForm Component
- * - Collects purchase details and allows the user to assign roommates from the available list.
- * - When the "assignees" field is clicked, a modal opens showing a list of available roommates.
- * - The user can select/deselect roommates; the selected roommates are displayed in the field.
+ * - Collects purchase details and allows the user to assign roommates.
+ * - When submitted, it sends purchase data to the parent component.
+ * - Also supports selecting roommates via a modal.
  */
 export default function PurchaseForm({ onClose, onAddPurchase, availableRoommates }: PurchaseFormProps): JSX.Element {
-  // Form state: cost, name, date, etc.
   const [formData, setFormData] = useState<PurchaseFormData>({
     date: '',
     name: '',
     cost: '',
     category: '',
     person: '',
-    assignees: [], // We'll store the selected roommate emails here
+    assignees: [],
   });
-  // Boolean to control showing the roommate selector modal
   const [showRoommateSelector, setShowRoommateSelector] = useState<boolean>(false);
 
-  // Update form data for text inputs
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Toggle selection for a given roommate (by email)
   const toggleRoommateSelection = (roommateEmail: string): void => {
     if (formData.assignees.includes(roommateEmail)) {
-      setFormData({
-        ...formData,
-        assignees: formData.assignees.filter(email => email !== roommateEmail),
-      });
+      setFormData({ ...formData, assignees: formData.assignees.filter(email => email !== roommateEmail) });
     } else {
-      setFormData({
-        ...formData,
-        assignees: [...formData.assignees, roommateEmail],
-      });
+      setFormData({ ...formData, assignees: [...formData.assignees, roommateEmail] });
     }
   };
 
-  // Handle form submission
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    // Construct purchase object to be sent to backend
     const purchase: Purchase = {
-      id: Date.now(), // Replace with proper ID generation as needed
+      id: Date.now(), // Temporary ID generation; backend will likely generate its own.
       date: formData.date,
       name: formData.name,
       cost: parseFloat(formData.cost),
@@ -59,14 +49,35 @@ export default function PurchaseForm({ onClose, onAddPurchase, availableRoommate
       person: formData.person,
       assignees: formData.assignees,
     };
-    onAddPurchase(purchase);
-    onClose();
+
+    // Send purchase to backend
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:8000/api/purchases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify(purchase),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        // Optionally handle errors
+        console.error('Error creating purchase:', data.message);
+      } else {
+        onAddPurchase(data.purchase); // Use the returned purchase from backend
+        onClose();
+      }
+    } catch (error) {
+      console.error('Network error creating purchase:', error);
+    }
   };
 
   return (
     <>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
-        {/* Other inputs (date, name, cost, category, person) */}
+        {/* Date Input */}
         <div>
           <label htmlFor="date" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
             Date
@@ -83,6 +94,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, availableRoommate
                        dark:border-gray-600 dark:text-gray-200"
           />
         </div>
+        {/* Name of Purchase Input */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
             Name of Purchase
@@ -99,6 +111,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, availableRoommate
                        dark:border-gray-600 dark:text-gray-200"
           />
         </div>
+        {/* Cost Input */}
         <div>
           <label htmlFor="cost" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
             Cost
@@ -116,6 +129,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, availableRoommate
                        dark:border-gray-600 dark:text-gray-200"
           />
         </div>
+        {/* Category Input */}
         <div>
           <label htmlFor="category" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
             Category
@@ -132,6 +146,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, availableRoommate
                        dark:border-gray-600 dark:text-gray-200"
           />
         </div>
+        {/* Purchaser Input */}
         <div>
           <label htmlFor="person" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
             Purchaser
