@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login.js';
-import SignUp from './pages/SignUp.js';
+import Login from './pages/auth/Login.js';
+import SignUp from './pages/auth/SignUp.js';
 import MainLayout from './pages/MainLayout.js';
 import MainPage from './pages/Dashboard.js';
 import HouseholdPage from './pages/HouseholdPage.js';

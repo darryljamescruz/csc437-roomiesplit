@@ -1,5 +1,5 @@
 import React from 'react';
-import HouseholdForm from '../components/HouseholdForm'; // Adjust the path as needed
+import HouseholdForm from '../components/HouseholdForm.js'; // Adjust the path as needed
 
 /**
  * HouseholdPage Component
