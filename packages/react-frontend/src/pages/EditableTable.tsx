@@ -4,10 +4,11 @@ import { Purchase } from '../types.js';
 
 interface EditableTableProps {
   purchases: Purchase[];
-  onDeletePurchase?: (id: number) => void;
+  selectedIds: number[];
+  onToggleSelect: (id: number) => void;
 }
 
-export default function EditableTable({ purchases, onDeletePurchase }: EditableTableProps): JSX.Element {
+export default function EditableTable({ purchases, selectedIds, onToggleSelect }: EditableTableProps): JSX.Element {
   // Calculate split amount: cost divided by number of assignees
   const calculateSplit = (purchase: Purchase): string => {
     if (purchase.assignees.length === 0) return '-';
@@ -19,40 +20,44 @@ export default function EditableTable({ purchases, onDeletePurchase }: EditableT
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" className="px-4 py-3 border-r">Date</th>
-            <th scope="col" className="px-4 py-3 border-r">Purchase</th>
-            <th scope="col" className="px-4 py-3 border-r">Cost</th>
-            <th scope="col" className="px-4 py-3 border-r">Category</th>
-            <th scope="col" className="px-4 py-3 border-r">Purchaser</th>
-            <th scope="col" className="px-4 py-3 border-r">Assignees</th>
-            <th scope="col" className="px-4 py-3 border-r">Split Amount</th>
-            {purchases.length > 0 && onDeletePurchase && (
-              <th scope="col" className="px-4 py-3">Delete</th>
-            )}
+            {/* New Selection Column Header */}
+            <th className="px-4 py-3 border-r">Select</th>
+            <th className="px-4 py-3 border-r">Date</th>
+            <th className="px-4 py-3 border-r">Purchase</th>
+            <th className="px-4 py-3 border-r">Cost</th>
+            <th className="px-4 py-3 border-r">Category</th>
+            <th className="px-4 py-3 border-r">Purchaser</th>
+            <th className="px-4 py-3 border-r">Assignees</th>
+            <th className="px-4 py-3">Split Amount</th>
           </tr>
         </thead>
         <tbody>
-          {purchases.map((purchase) => (
-            <tr key={purchase.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td className="px-4 py-3 border-r">{purchase.date}</td>
-              <td className="px-4 py-3 border-r">{purchase.name}</td>
-              <td className="px-4 py-3 border-r">${purchase.cost.toFixed(2)}</td>
-              <td className="px-4 py-3 border-r">{purchase.category}</td>
-              <td className="px-4 py-3 border-r">{purchase.person}</td>
-              <td className="px-4 py-3 border-r">{purchase.assignees.join(', ')}</td>
-              <td className="px-4 py-3 border-r">${calculateSplit(purchase)}</td>
-              {onDeletePurchase && (
-                <td className="px-4 py-3">
-                  <button
-                    onClick={() => onDeletePurchase(purchase.id)}
-                    className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                  >
-                    Delete
-                  </button>
+          {purchases.map((purchase) => {
+            const isSelected = selectedIds.includes(purchase.id);
+            return (
+              <tr
+                key={purchase.id}
+                className={`cursor-pointer ${isSelected ? 'bg-blue-100 dark:bg-blue-900' : 'bg-white dark:bg-gray-800'} border-b dark:border-gray-700`}
+              >
+                {/* Selection Column with checkbox */}
+                <td className="px-4 py-3 border-r">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => onToggleSelect(purchase.id)}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  />
                 </td>
-              )}
-            </tr>
-          ))}
+                <td className="px-4 py-3 border-r">{purchase.date}</td>
+                <td className="px-4 py-3 border-r">{purchase.name}</td>
+                <td className="px-4 py-3 border-r">${purchase.cost.toFixed(2)}</td>
+                <td className="px-4 py-3 border-r">{purchase.category}</td>
+                <td className="px-4 py-3 border-r">{purchase.person}</td>
+                <td className="px-4 py-3 border-r">{purchase.assignees.join(', ')}</td>
+                <td className="px-4 py-3">${calculateSplit(purchase)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
