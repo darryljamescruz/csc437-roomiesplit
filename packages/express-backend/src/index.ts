@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
+import authRoutes from "./routes/auth"; 
+
 
 dotenv.config(); // Load environment variables
 
@@ -14,6 +16,9 @@ app.use(express.json());
 
 // Connect to MongoDB Atlas
 connectDB();
+
+// Mount the auth routes at /api
+app.use("/api", authRoutes);
 
 const PORT = process.env.PORT || 8000;
 
