@@ -52,8 +52,8 @@ export function verifyAuthToken(req: Request, res: Response, next: NextFunction)
     if (error) {
       res.status(403).json({ message: 'Invalid token' });
     } else {
-      // Optionally, attach decoded token to request for later use:
-      // req.user = decoded;
+      // Attach decoded token payload to req.user:
+      req.user = decoded as { userId: string; email: string; fullName?: string };
       next();
     }
   });

@@ -16,13 +16,15 @@ export default function HouseholdPage(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  console.log('Token for GET /api/household:', token);
 
   // Fetch the current user's data (fullName) when the component mounts.
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8000/api/auth/me', {
+        const res = await fetch('http://localhost:8000/api/household', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

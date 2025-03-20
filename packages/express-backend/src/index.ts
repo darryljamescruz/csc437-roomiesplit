@@ -6,7 +6,7 @@ import connectDB from "./db.js";
 
 // route definitions
 import authRoutes from "./routes/auth"; 
-
+import householdRoutes from './routes/household';
 
 dotenv.config(); // Load environment variables
 
@@ -20,7 +20,9 @@ app.use(express.json());
 connectDB();
 
 // Mount the auth routes at /api
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use('/api/household', householdRoutes);
+
 
 const PORT = process.env.PORT || 8000;
 
