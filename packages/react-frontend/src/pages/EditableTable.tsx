@@ -1,11 +1,15 @@
 // src/pages/EditableTable.jsx
-// **Component to display a table of purchases that can be edited.**
-import React from 'react';
+import React, { JSX } from 'react';
 import { Purchase } from '../types.js';
 
-export default function EditableTable({ purchases }: { purchases: Purchase[] }) {
+interface EditableTableProps {
+  purchases: Purchase[];
+  onDeletePurchase?: (id: number) => void;
+}
+
+export default function EditableTable({ purchases, onDeletePurchase }: EditableTableProps): JSX.Element {
   // Calculate split amount: cost divided by number of assignees
-  const calculateSplit = (purchase: Purchase) => {
+  const calculateSplit = (purchase: Purchase): string => {
     if (purchase.assignees.length === 0) return '-';
     return (purchase.cost / purchase.assignees.length).toFixed(2);
   };
@@ -21,7 +25,10 @@ export default function EditableTable({ purchases }: { purchases: Purchase[] }) 
             <th scope="col" className="px-4 py-3 border-r">Category</th>
             <th scope="col" className="px-4 py-3 border-r">Purchaser</th>
             <th scope="col" className="px-4 py-3 border-r">Assignees</th>
-            <th scope="col" className="px-4 py-3">Split Amount</th>
+            <th scope="col" className="px-4 py-3 border-r">Split Amount</th>
+            {purchases.length > 0 && onDeletePurchase && (
+              <th scope="col" className="px-4 py-3">Delete</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -33,7 +40,17 @@ export default function EditableTable({ purchases }: { purchases: Purchase[] }) 
               <td className="px-4 py-3 border-r">{purchase.category}</td>
               <td className="px-4 py-3 border-r">{purchase.person}</td>
               <td className="px-4 py-3 border-r">{purchase.assignees.join(', ')}</td>
-              <td className="px-4 py-3">${calculateSplit(purchase)}</td>
+              <td className="px-4 py-3 border-r">${calculateSplit(purchase)}</td>
+              {onDeletePurchase && (
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => onDeletePurchase(purchase.id)}
+                    className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
