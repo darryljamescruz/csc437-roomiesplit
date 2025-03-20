@@ -8,7 +8,7 @@ export interface IPurchase extends Document {
   category: string;
   person: string;
   assignees: string[];
-  household: mongoose.Types.ObjectId; // Reference to the associated household
+  household?: mongoose.Types.ObjectId; // optional
 }
 
 const PurchaseSchema: Schema<IPurchase> = new Schema({
@@ -21,7 +21,7 @@ const PurchaseSchema: Schema<IPurchase> = new Schema({
   household: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Household', 
-    required: true 
+    required: false  // Explicitly mark as optional
   }
 });
 

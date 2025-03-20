@@ -45,7 +45,7 @@ const PurchaseSchema = new mongoose_1.Schema({
     household: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: 'Household',
-        required: true
+        required: false // Explicitly mark as optional
     }
 });
 const Purchase = mongoose_1.default.model('Purchase', PurchaseSchema);
