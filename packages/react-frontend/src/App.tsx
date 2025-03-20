@@ -5,23 +5,25 @@ import SignUp from './pages/auth/SignUp.js';
 import MainLayout from './pages/MainLayout.js';
 import MainPage from './pages/Dashboard.js';
 import HouseholdPage from './pages/HouseholdPage.js';
+import RequireAuth from './components/RequireAuth.js';
 
-
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route element={<MainLayout />}>
+
+        {/* Protected Routes */}
+        <Route element={<RequireAuth><MainLayout /></RequireAuth>}>
           <Route path="main" element={<MainPage />} />
           <Route path="household" element={<HouseholdPage />} />
-          {/* Additional protected routes can go here */}
         </Route>
+
+        {/* Default Route */}
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
 }
-
-export default App;

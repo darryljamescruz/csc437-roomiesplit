@@ -26,9 +26,8 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // toggle dark mode on root element
+  // Toggle dark mode on root element
   useEffect(() => {
-    console.log("Dark mode is now:", darkMode);
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -36,9 +35,11 @@ export default function Navbar() {
     }
   }, [darkMode]);
 
+  // Handle sign out: clear the token and navigate to the login page.
   const handleSignOut = () => {
-    // Temporary sign out action with no backend action
-    console.log("Signing out...");    
+    // Clear the stored authentication token
+    localStorage.removeItem('token');
+    console.log("Token cleared. Signing out...");
     navigate('/login');
   };
 
@@ -69,9 +70,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           {/* Dark Mode Toggle Button */}
           <button
-            onClick={() => {
-              setDarkMode(!darkMode);
-            }}
+            onClick={() => setDarkMode(!darkMode)}
             aria-label="Toggle dark mode"
             className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import moneyIcon from '../assets/money.svg';
+import moneyIcon from '../../assets/money.svg';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
@@ -25,7 +25,7 @@ export default function Login() {
           setError(data.message || 'Login failed.');
         } else {
           // Optionally store the authentication token if returned:
-          // localStorage.setItem('token', data.token);
+          localStorage.setItem('token', data.token);
           navigate('/main'); // Navigate to your protected route
         }
       } catch (err) {
