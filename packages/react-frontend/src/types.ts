@@ -18,3 +18,10 @@ export interface Purchase {
     householdName: string;
     roommates: Roommate[];
   }
+
+  // interface for household data returned by backend
+export interface HouseholdData {
+  _id: string;
+  householdName: string;
+  roommates: { name: string; email: string }[];
+}
