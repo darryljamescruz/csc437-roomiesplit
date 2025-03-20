@@ -1,3 +1,9 @@
 packages/react-frontend/node_modules/
 node_modules/
 packages/express-backend/.env
+packages/react-frontend/src/pages/Dashboard.tsx
+packages/.DS_Store
+.gitignore
+packages/express-backend/.DS_Store
+packages/express-backend/dist/.DS_Store
+packages/express-backend/src/.DS_Store
