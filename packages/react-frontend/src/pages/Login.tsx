@@ -52,7 +52,7 @@ export default function Login() {
             Sign in to your account
           </h2>
         </div>
-
+  
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -72,7 +72,7 @@ export default function Login() {
                 />
               </div>
             </div>
-
+  
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-900">
                 Password
@@ -90,13 +90,15 @@ export default function Login() {
                 />
               </div>
             </div>
-
+  
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+  
             <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                Sign in
+                {isLoading ? 'Loading...' : 'Sign in'}
               </button>
             </div>
           </form>

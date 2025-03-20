@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_js_1 = __importDefault(require("./db.js"));
+// route definitions
 const auth_1 = __importDefault(require("./routes/auth"));
 dotenv_1.default.config(); // Load environment variables
 const app = (0, express_1.default)();

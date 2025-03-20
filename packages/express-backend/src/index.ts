@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./db.js";
+
+// route definitions
 import authRoutes from "./routes/auth"; 
 
 
