@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Modal from '../components/Modal';
-import PurchaseForm from '../components/PurchaseForm';
-import EditableTable from './EditableTable';
-import { Purchase } from '../types';
+import Modal from '../components/Modal.js';
+import PurchaseForm from '../components/PurchaseForm.js';
+import EditableTable from './EditableTable.js';
+import { Purchase } from '../types.js';
+
 
 
 export default function MainPage() {
