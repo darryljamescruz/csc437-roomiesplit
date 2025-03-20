@@ -63,7 +63,7 @@ export default function MainPage(): JSX.Element {
           onCloseRequested={() => setIsModalOpen(false)}
           headerLabel="Add New Purchase"
         >
-          <PurchaseForm onClose={() => setIsModalOpen(false)} onAddPurchase={addPurchase} />
+          <PurchaseForm onClose={() => setIsModalOpen(false)} onAddPurchase={addPurchase} availableRoommates={[]} />
         </Modal>
       </div>
     );
