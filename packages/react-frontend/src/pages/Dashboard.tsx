@@ -22,13 +22,6 @@ export default function MainPage(): JSX.Element {
       setSelectedIds([]); // Clear selection after deletion
     };
   
-    // Toggle selection of a purchase using a string id
-    const toggleSelect = (id: string): void => {
-      setSelectedIds((prev) =>
-        prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-      );
-    };
-  
     return (
       <div className="p-4">
         {/* Header container: Title, Add Purchase and Delete Selected (if any) buttons */}
