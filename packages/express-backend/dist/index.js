@@ -11,6 +11,7 @@ const db_js_1 = __importDefault(require("./db.js"));
 // route definitions
 const auth_1 = __importDefault(require("./routes/auth"));
 const purchases_1 = __importDefault(require("./routes/purchases"));
+const preferences_1 = __importDefault(require("./routes/preferences"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config(); // Load environment variables
 const app = (0, express_1.default)();
@@ -24,8 +25,12 @@ app.use(express_1.default.json());
 // Mount the auth routes at /api
 app.use("/ap/auth", auth_1.default);
 app.use('/api/purchases', purchases_1.default);
+app.use('/api/preferences', preferences_1.default);
 // UNIMPLEMETED: HOUSEHOLD ROUTES & SCHEMAS
-const PORT = process.env.PORT || 3000;
+app.get("*", (req, res) => {
+    res.sendFile(path_1.default.join(staticDir, "index.html"));
+});
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });

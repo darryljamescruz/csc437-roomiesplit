@@ -4,29 +4,23 @@ import { NavLink, useNavigate } from "react-router-dom";
 import moneyIcon from '../assets/money.svg';
 import React, { useState, useEffect } from 'react';
 
-// Define an interface for navigation items.
-interface NavigationItem {
-  name: string;
-  href: string;
-}
-
-// Define your navigation array with type annotations.
-const navigation: NavigationItem[] = [
-  { name: "Dashboard", href: "/main" },
-  { name: "Household", href: "/household" },
-];
-
-// Helper function to join CSS classes.
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Navbar() {
-  // Dark mode state
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Toggle dark mode on root element
+  // On initial render, load dark mode setting from localStorage.
+  useEffect(() => {
+    const stored = localStorage.getItem('darkMode');
+    if (stored !== null) {
+      const prefersDark = JSON.parse(stored);
+      setDarkMode(prefersDark);
+      if (prefersDark) {
+        document.documentElement.classList.add('dark');
+      }
+    }
+  }, []);
+
+  // When darkMode state changes, update the HTML class.
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -35,9 +29,31 @@ export default function Navbar() {
     }
   }, [darkMode]);
 
-  // Handle sign out: clear the token and navigate to the login page.
+  // Toggle dark mode and call the backend endpoint to update the user's preference.
+  const handleToggleDarkMode = async () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:3000/api/preferences', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify({ darkModeEnabled: newDarkMode }),
+      });
+      if (!res.ok) {
+        console.error('Error updating dark mode preference');
+      }
+    } catch (error) {
+      console.error('Network error updating dark mode:', error);
+    }
+  };
+
+  // Sign out: clear the token and navigate to login.
   const handleSignOut = () => {
-    // Clear the stored authentication token
     localStorage.removeItem('token');
     console.log("Token cleared. Signing out...");
     navigate('/login');
@@ -49,28 +65,34 @@ export default function Navbar() {
         <div className="flex items-center">
           <img alt="Money Icon" src={moneyIcon} className="h-8 w-auto" />
           <div className="ml-10 flex space-x-4">
-            {navigation.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) =>
-                  classNames(
-                    isActive
-                      ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white",
-                    "rounded-md px-3 py-2 text-sm font-medium"
-                  )
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
+            <NavLink
+              key="Dashboard"
+              to="/main"
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 text-sm font-medium"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              }
+            >
+              Dashboard
+            </NavLink>
+            <NavLink
+              key="Household"
+              to="/household"
+              className={({ isActive }) =>
+                isActive
+                  ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white rounded-md px-3 py-2 text-sm font-medium"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              }
+            >
+              Household
+            </NavLink>
           </div>
         </div>
         <div className="flex items-center space-x-4">
           {/* Dark Mode Toggle Button */}
           <button
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={handleToggleDarkMode}
             aria-label="Toggle dark mode"
             className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
@@ -81,7 +103,7 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Profile dropdown using Headless UI Menu */}
+          {/* Profile Dropdown */}
           <Menu as="div" className="relative">
             <Menu.Button className="flex items-center focus:outline-none">
               <UserCircleIcon className="h-8 w-8 text-gray-600 dark:text-gray-300" />
@@ -91,9 +113,7 @@ export default function Navbar() {
                 {({ active }) => (
                   <button
                     onClick={handleSignOut}
-                    className={`${
-                      active ? 'bg-gray-100 dark:bg-gray-700' : ''
-                    } w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300`}
+                    className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300`}
                   >
                     Sign out
                   </button>

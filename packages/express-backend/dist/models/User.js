@@ -50,6 +50,10 @@ const userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
+    },
+    darkModeEnabled: {
+        type: Boolean,
+        default: false
     }
 });
 // presave hook to has password before saviing

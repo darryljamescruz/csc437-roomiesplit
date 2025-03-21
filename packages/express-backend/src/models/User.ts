@@ -7,7 +7,7 @@ export interface IUser extends Document {
     fullName: string;
     email: string;
     password:string;
-
+    darkModeEnabled: { type: Boolean, default: false }
     comparePassword(candidatePassword: string): Promise<Boolean>;
 }
 
@@ -22,6 +22,10 @@ const userSchema: Schema<IUser> = new Schema({
     password: {
         type:String,
         required: true,
+    },
+    darkModeEnabled: {
+         type: Boolean, 
+         default: false 
     }
 })
 
