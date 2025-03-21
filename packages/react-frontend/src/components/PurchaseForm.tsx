@@ -60,7 +60,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
       const url = initialPurchase 
         ? `http://localhost:8000/api/purchases/${purchase.id}` 
         : 'http://localhost:8000/api/purchases';
-      const method = initialPurchase ? 'PUT' : 'POST';
+      const method = initialPurchase ? 'PATCH' : 'POST';
       const response = await fetch(url, {
         method,
         headers: {
@@ -95,7 +95,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           required
           value={formData.date}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -111,7 +111,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           required
           value={formData.name}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -128,7 +128,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           required
           value={formData.cost}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -144,7 +144,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           required
           value={formData.category}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -160,7 +160,7 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           required
           value={formData.person}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
@@ -177,13 +177,13 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
           value={assigneesInput}
           onChange={handleAssigneesChange}
           placeholder="e.g. alice@example.com, bob@example.com"
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400
                      focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
       <button
         type="submit"
-        className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm 
+        className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm
                    hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
         {initialPurchase ? 'Update Purchase' : 'Add Purchase'}
