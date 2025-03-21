@@ -42,9 +42,6 @@ const PurchaseSchema = new mongoose_1.Schema({
     person: { type: String, required: true },
     assignees: { type: [String], required: true },
 });
-// Mongoose automatically adds a unique _id field.
-// You can use _id as the unique identifier on the frontend,
-// or add a virtual getter to expose it as "id":
 PurchaseSchema.virtual('id').get(function () {
     return this._id.toString();
 });
