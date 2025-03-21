@@ -24,7 +24,7 @@ app.use(express.json());
 connectDB();
 
 // Mount the auth routes at /api
-app.use("/ap/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use('/api/purchases', purchasesRoutes);
 app.use('/api/preferences', preferenceRoutes)
 // UNIMPLEMETED: HOUSEHOLD ROUTES & SCHEMAS

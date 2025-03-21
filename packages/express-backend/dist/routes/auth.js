@@ -53,7 +53,7 @@ function verifyAuthToken(req, res, next) {
         }
         else {
             // Optionally, attach decoded token to request for later use:
-            // req.user = decoded;
+            req.user = decoded;
             next();
         }
     });

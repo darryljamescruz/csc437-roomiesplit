@@ -36,7 +36,7 @@ export default function Navbar() {
     localStorage.setItem('darkMode', JSON.stringify(newDarkMode));
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/preferences', {
+      const res = await fetch('http://localhost:8000/api/preferences', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

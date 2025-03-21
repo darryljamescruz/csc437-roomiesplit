@@ -12,8 +12,10 @@ const router = (0, express_1.Router)();
  * Updates the current user's preferences.
  * Expects { darkModeEnabled: boolean } in the request body.
  */
-router.put('/', auth_1.verifyAuthToken, async (req, res) => {
+router.patch('/', auth_1.verifyAuthToken, async (req, res) => {
     try {
+        console.log('Preferences PATCH called with body:', req.body);
+        console.log('User attached to request:', req.user);
         const { darkModeEnabled } = req.body;
         if (typeof darkModeEnabled !== 'boolean') {
             res.status(400).json({ message: 'Invalid value for darkModeEnabled.' });

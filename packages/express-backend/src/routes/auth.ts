@@ -1,4 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any;
+    }
+  }
+}
 import User, { IUser } from '../models/User';
 import jwt from 'jsonwebtoken';
 
@@ -53,7 +61,7 @@ export function verifyAuthToken(req: Request, res: Response, next: NextFunction)
       res.status(403).json({ message: 'Invalid token' });
     } else {
       // Optionally, attach decoded token to request for later use:
-      // req.user = decoded;
+      req.user = decoded;
       next();
     }
   });
@@ -116,5 +124,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Server error during login.' });
   }
 });
+
+
 
 export default router;

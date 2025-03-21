@@ -23,7 +23,7 @@ app.use(express_1.default.json());
 // Connect to MongoDB Atlas
 (0, db_js_1.default)();
 // Mount the auth routes at /api
-app.use("/ap/auth", auth_1.default);
+app.use("/api/auth", auth_1.default);
 app.use('/api/purchases', purchases_1.default);
 app.use('/api/preferences', preferences_1.default);
 // UNIMPLEMETED: HOUSEHOLD ROUTES & SCHEMAS

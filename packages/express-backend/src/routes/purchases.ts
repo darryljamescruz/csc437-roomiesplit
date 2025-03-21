@@ -19,11 +19,32 @@ router.get('/', verifyAuthToken, async (req: Request, res: Response): Promise<vo
 });
 
 /**
- * PUT /api/purchases/:id
+ * POST /api/purchases
+ * Creates a new purchase.
+ * Expects purchase data in the request body.
+ */
+router.post('/', verifyAuthToken, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { date, name, cost, category, person, assignees } = req.body;
+    if (!date || !name || !cost || !category || !person || !assignees) {
+      res.status(400).json({ message: 'Missing required fields.' });
+      return;
+    }
+    const newPurchase = new Purchase({ date, name, cost, category, person, assignees });
+    await newPurchase.save();
+    res.status(201).json({ message: 'Purchase created successfully.', purchase: newPurchase });
+  } catch (error) {
+    console.error('Error creating purchase:', error);
+    res.status(500).json({ message: 'Server error creating purchase.' });
+  }
+});
+
+/**
+ * PATCH /api/purchases/:id
  * Updates an existing purchase.
  * Expects updated purchase data in the request body.
  */
-router.put('/:id', verifyAuthToken, async (req: Request, res: Response): Promise<void> => {
+router.patch('/:id', verifyAuthToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
