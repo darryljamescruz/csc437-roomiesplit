@@ -1,3 +1,4 @@
+// Dashboard.tsx
 import React, { JSX, useState } from 'react';
 import Modal from '../components/Modal.js';
 import PurchaseForm from '../components/PurchaseForm.js';
@@ -7,8 +8,8 @@ import { Purchase } from '../types.js';
 export default function MainPage(): JSX.Element {
     const [purchases, setPurchases] = useState<Purchase[]>([]);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    // Lift the selected IDs state from the table
-    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    // Change selectedIds to string[]
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
   
     // Add a new purchase to the list
     const addPurchase = (purchase: Purchase): void => {
@@ -16,13 +17,13 @@ export default function MainPage(): JSX.Element {
     };
   
     // Delete purchases by filtering out those with IDs in selectedIds
-    const deletePurchase = (ids: number[]): void => {
+    const deletePurchase = (ids: string[]): void => {
       setPurchases(prev => prev.filter(p => !ids.includes(p.id)));
       setSelectedIds([]); // Clear selection after deletion
     };
   
-    // Toggle selection of a purchase
-    const toggleSelect = (id: number): void => {
+    // Toggle selection of a purchase using a string id
+    const toggleSelect = (id: string): void => {
       setSelectedIds((prev) =>
         prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
       );
@@ -39,7 +40,6 @@ export default function MainPage(): JSX.Element {
                 onClick={() => deletePurchase(selectedIds)}
                 className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               >
-                {/* Optionally, you could add a trash icon here */}
                 Delete Selected
               </button>
             )}
@@ -54,8 +54,8 @@ export default function MainPage(): JSX.Element {
   
         <EditableTable 
           purchases={purchases} 
-          selectedIds={selectedIds} 
-          onToggleSelect={toggleSelect} 
+          onEditPurchase={(purchase: Purchase) => { /* your edit logic */ }} 
+          onDeletePurchase={(id: string) => deletePurchase([id])} // Deleting a single item
         />
   
         <Modal
@@ -67,4 +67,4 @@ export default function MainPage(): JSX.Element {
         </Modal>
       </div>
     );
-  }
+}

@@ -1,5 +1,5 @@
 export interface Purchase {
-    id: number;
+    id: string;
     date: string;
     name: string;
     cost: number;
@@ -7,6 +7,16 @@ export interface Purchase {
     person: string;
     assignees: string[];
   }
+  
+// Interface for data coming from the Purchase form
+export interface PurchaseFormData {
+  date: string;
+  name: string;
+  cost: string; // cost is a string from the input, then parsed to a number
+  category: string;
+  person: string;
+  assignees: string[];
+}
 
 export interface Roommate {
     name: string;

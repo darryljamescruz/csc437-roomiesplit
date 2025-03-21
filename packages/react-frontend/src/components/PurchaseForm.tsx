@@ -1,80 +1,88 @@
-import React, { useState, ChangeEvent, FormEvent, JSX } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, JSX } from 'react';
+import { PurchaseFormData, Purchase } from '../types.js';
 
-// Define an interface for a purchase object
-export interface Purchase {
-  id: number;
-  date: string;
-  name: string;
-  cost: number;
-  category: string;
-  person: string;
-  assignees: string[];
-}
-
-// Define an interface for the component's props
 interface PurchaseFormProps {
   onClose: () => void;
   onAddPurchase: (purchase: Purchase) => void;
+  initialPurchase?: Purchase; // For editing an existing purchase
 }
 
-// Define an interface for the form state (all fields are strings since they come from input values)
-interface PurchaseFormData {
-  date: string;
-  name: string;
-  cost: string;
-  category: string;
-  person: string;
-  assignees: string;
-}
-
-/**
- * PurchaseForm Component
- * Renders a form that collects purchase data and submits a new Purchase object.
- * The onAddPurchase callback is called with the constructed Purchase object.
- */
-export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormProps): JSX.Element {
-  const [formData, setFormData] = useState<PurchaseFormData>({
-    date: '',
-    name: '',
-    cost: '',
-    category: '',
-    person: '',
-    assignees: '',
+export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }: PurchaseFormProps): JSX.Element {
+  // Initialize form state from initialPurchase if provided.
+  const [formData, setFormData] = useState<Omit<PurchaseFormData, 'assignees'>>({
+    date: initialPurchase ? initialPurchase.date : '',
+    name: initialPurchase ? initialPurchase.name : '',
+    cost: initialPurchase ? initialPurchase.cost.toString() : '',
+    category: initialPurchase ? initialPurchase.category : '',
+    person: initialPurchase ? initialPurchase.person : '',
   });
+  // Separate state for the raw assignees input (comma-separated string)
+  const [assigneesInput, setAssigneesInput] = useState<string>(initialPurchase ? initialPurchase.assignees.join(', ') : '');
 
-  /**
-   * handleChange updates the form state when an input value changes.
-   */
+  useEffect(() => {
+    if (initialPurchase) {
+      setFormData({
+        date: initialPurchase.date,
+        name: initialPurchase.name,
+        cost: initialPurchase.cost.toString(),
+        category: initialPurchase.category,
+        person: initialPurchase.person,
+      });
+      setAssigneesInput(initialPurchase.assignees.join(', '));
+    }
+  }, [initialPurchase]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  /**
-   * handleSubmit constructs a Purchase object from the form data,
-   * calls onAddPurchase, and then calls onClose.
-   */
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  const handleAssigneesChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setAssigneesInput(e.target.value);
+  };
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    
+    const assigneesArray = assigneesInput.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    
     const purchase: Purchase = {
-      id: Date.now(),
+      id: initialPurchase ? initialPurchase.id : `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
       date: formData.date,
       name: formData.name,
       cost: parseFloat(formData.cost),
       category: formData.category,
       person: formData.person,
-      assignees: formData.assignees
-        .split(',')
-        .map((name) => name.trim())
-        .filter((name) => name !== ''),
+      assignees: assigneesArray,
     };
 
-    onAddPurchase(purchase);
-    onClose();
+    try {
+      const token = localStorage.getItem('token');
+      const url = initialPurchase 
+        ? `http://localhost:8000/api/purchases/${purchase.id}` 
+        : 'http://localhost:8000/api/purchases';
+      const method = initialPurchase ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify(purchase),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        console.error('Error creating/updating purchase:', data.message);
+      } else {
+        onAddPurchase(data.purchase);
+        onClose();
+      }
+    } catch (error) {
+      console.error('Network error creating/updating purchase:', error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
       {/* Date Input */}
       <div>
         <label htmlFor="date" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
@@ -87,9 +95,8 @@ export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormPro
           required
           value={formData.date}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
       {/* Name of Purchase Input */}
@@ -104,9 +111,8 @@ export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormPro
           required
           value={formData.name}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
       {/* Cost Input */}
@@ -122,9 +128,8 @@ export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormPro
           required
           value={formData.cost}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
       {/* Category Input */}
@@ -139,9 +144,8 @@ export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormPro
           required
           value={formData.category}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
       {/* Purchaser Input */}
@@ -156,36 +160,33 @@ export default function PurchaseForm({ onClose, onAddPurchase }: PurchaseFormPro
           required
           value={formData.person}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
-      {/* Assignees Input */}
+      {/* Assignees Input as a simple text field */}
       <div>
         <label htmlFor="assignees" className="block text-sm font-medium text-gray-900 dark:text-gray-200">
-          Assignees (comma separated)
+          Assign Roommates (comma-separated)
         </label>
         <input
           type="text"
           id="assignees"
           name="assignees"
           required
-          value={formData.assignees}
-          onChange={handleChange}
-          placeholder="e.g. Alice, Bob, Carol"
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm 
-                     placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 
-                     dark:border-gray-600 dark:text-gray-200"
+          value={assigneesInput}
+          onChange={handleAssigneesChange}
+          placeholder="e.g. alice@example.com, bob@example.com"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 
+                     focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
         />
       </div>
-      {/* Submit Button */}
       <button
         type="submit"
-        className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white 
+        className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm 
                    hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
       >
-        Add Purchase
+        {initialPurchase ? 'Update Purchase' : 'Add Purchase'}
       </button>
     </form>
   );
