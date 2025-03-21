@@ -1,3 +1,4 @@
 packages/react-frontend/node_modules/
 node_modules/
 packages/express-backend/.env
+.DS_Store
