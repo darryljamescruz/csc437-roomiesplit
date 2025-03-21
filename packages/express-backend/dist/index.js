@@ -27,6 +27,8 @@ app.use("/ap/auth", auth_1.default);
 app.use('/api/purchases', purchases_1.default);
 app.use('/api/preferences', preferences_1.default);
 // UNIMPLEMETED: HOUSEHOLD ROUTES & SCHEMAS
+// Serve static files from the React build folder DIST
+app.use(express_1.default.static(staticDir));
 app.get("*", (req, res) => {
     res.sendFile(path_1.default.join(staticDir, "index.html"));
 });

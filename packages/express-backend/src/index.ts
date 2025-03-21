@@ -29,6 +29,9 @@ app.use('/api/purchases', purchasesRoutes);
 app.use('/api/preferences', preferenceRoutes)
 // UNIMPLEMETED: HOUSEHOLD ROUTES & SCHEMAS
 
+// Serve static files from the React build folder DIST
+app.use(express.static(staticDir));
+
 app.get("*", (req, res) => {
     res.sendFile(path.join(staticDir, "index.html"));
 });
