@@ -1,4 +1,5 @@
-// db.js
+//express-backend/src/db.ts 
+//this is sort of the connector code to the mongoDB atlas
 
 import mongoose from "mongoose";
 import dotenv from "dotenv";

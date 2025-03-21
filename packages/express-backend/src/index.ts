@@ -6,6 +6,7 @@ import connectDB from "./db.js";
 
 // route definitions
 import authRoutes from "./routes/auth"; 
+import purchasesRoutes from './routes/purchases';
 
 
 dotenv.config(); // Load environment variables
@@ -20,9 +21,11 @@ app.use(express.json());
 connectDB();
 
 // Mount the auth routes at /api
-app.use("/api", authRoutes);
+app.use("/ap/auth", authRoutes);
+app.use('/api/purchases', purchasesRoutes);
 
-const PORT = process.env.PORT || 8000;
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(
