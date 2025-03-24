@@ -14,7 +14,7 @@ export default function MainPage(): JSX.Element {
   // Function to fetch purchases from the backend and update state.
   const fetchPurchases = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/purchases', {
+      const res = await fetch('/api/purchases', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       const data = await res.json();
@@ -46,7 +46,7 @@ export default function MainPage(): JSX.Element {
   // Delete purchase by sending a DELETE request and re-fetching the list
   const handleDeletePurchase = async (id: string): Promise<void> => {
     try {
-      const res = await fetch(`http://localhost:8000/api/purchases/${id}`, {
+      const res = await fetch(`/api/purchases/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

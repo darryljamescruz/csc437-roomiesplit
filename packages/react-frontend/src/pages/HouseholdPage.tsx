@@ -8,12 +8,10 @@ import HouseholdForm from '../components/HouseholdForm.js'; // Adjust the path a
  * The Navbar remains at the top if this page is rendered inside a shared layout.
  */
 export default function HouseholdPage() {
-  // This function would be replaced with your backend call later.
   //TODO: FIX
   const handleHouseholdSubmit = (householdData: { name: string; email: string }) => {
     console.log("Household Created:", householdData);
-    // For now, simply log the household info.
-    // Later, you can send this data to your backend and navigate accordingly.
+    console.log("UNIMPLEMENTED FEATURE :(");
   };
 
   return (

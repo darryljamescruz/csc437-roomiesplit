@@ -58,8 +58,8 @@ export default function PurchaseForm({ onClose, onAddPurchase, initialPurchase }
     try {
       const token = localStorage.getItem('token');
       const url = initialPurchase 
-        ? `http://localhost:8000/api/purchases/${purchase.id}` 
-        : 'http://localhost:8000/api/purchases';
+        ? `/api/purchases/${purchase.id}` 
+        : '/api/purchases';
       const method = initialPurchase ? 'PATCH' : 'POST';
       const response = await fetch(url, {
         method,
