@@ -13,7 +13,7 @@ const auth_js_1 = __importDefault(require("./routes/auth.js"));
 const purchases_js_1 = __importDefault(require("./routes/purchases.js"));
 const preferences_js_1 = __importDefault(require("./routes/preferences.js"));
 dotenv_1.default.config();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 const staticDir = process.env.STATIC_DIR || "public";
 async function setUpServer() {
     try {
